@@ -1,9 +1,9 @@
 import streamlit as st
-import streamlit.components.v1 as components
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse, parse_qs
+from xml.etree import ElementTree as ET
 
 st.title("WMS Converter")
 
@@ -33,13 +33,12 @@ for link in map_links:
 
 # TODO: Even though we aren't directly using "Map URL",
 # it's probably necessary when we want to get the XML and pass to GDAL.
-
 df = pd.DataFrame(maps_info, columns=["Map Name", "Map URL"])
 
 st.write("## Map Data")
 
 for index, row in df.iterrows():
-    # Creating columns inside iteration allows them to properly align
+    # Creating columns inside iteration allows them to properly align.. dont change this :)
     col1, col2 = st.columns(2)
 
     with col1:
@@ -49,4 +48,14 @@ for index, row in df.iterrows():
         if st.button(f"Get Data", key=index):
             # TODO: Instead of writing, save data to session state
             # Go to another page with transform form (or maybe a popup, if possible?)
-            st.write(f"Got data from {row['Map Name']} and URL: {row['Map URL']}")
+            #st.write(f"Got data from {row['Map Name']} and URL: {row['Map URL']}")
+
+            # Get the maps XML content from the URL
+            response = requests.get(row['Map URL'])
+
+            # TODO: remove above code, save data to session state to use in another page, perhaps?
+            if response.status_code == 200:
+                xml_content = response.text
+                st.write(xml_content)
+
+
