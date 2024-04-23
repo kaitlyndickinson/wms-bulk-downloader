@@ -4,7 +4,6 @@ import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse, parse_qs
 
-# Pull out the map links from the URL
 url = "https://astrowebmaps.wr.usgs.gov/webmapatlas/Layers/maps.html"
 response = requests.get(url)
 soup = BeautifulSoup(response.content, "html.parser")
@@ -18,7 +17,7 @@ download_folder = "downloaded_maps"
 if not os.path.exists(download_folder):
     os.makedirs(download_folder)
 
-st.title("WMS Downloader")
+st.title("WMS Bulk Downloader")
 
 # Save map names and map URLs for processing
 # TODO: maybe save off planet name (system), layer type, layer, and layer name,
