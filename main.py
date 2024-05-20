@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 from urllib.parse import urlparse, parse_qs
 
 url = "https://astrowebmaps.wr.usgs.gov/webmapatlas/Layers/maps.html"
-response = requests.get(url)
+response = requests.get(url, timeout=60)
 soup = BeautifulSoup(response.content, "html.parser")
 map_links = soup.find_all("a")
 
@@ -49,7 +49,7 @@ with st.container(height=max_height):
 if st.button("Download Maps"):
     with st.status("Downloading data..."):
         for map_url in selected_maps:
-            response = requests.get(map_url)
+            response = requests.get(map_url, timeout=60)
 
             if response.status_code == 200:
                 xml_content = response.text
